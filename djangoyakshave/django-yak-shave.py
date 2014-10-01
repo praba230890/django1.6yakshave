@@ -20,7 +20,7 @@ import sys
 import os
 import shutil
 
-# creating Django project
+# Creating Django project
 script = 'django-admin.py'
 command = 'startproject'
 project_name = " ".join(sys.argv[2:])
@@ -43,14 +43,14 @@ if err != None:
 
 sys.stdout.write("Your Django project created successfully..... \n")
 
-# getting cwd from terminal
+# Getting cwd from terminal
 p = subprocess.Popen(['pwd'], stdout=subprocess.PIPE)
 outer_dir = p.stdout.readline()[:-1]
 to_walk = os.path.join(outer_dir, project_name)
 
 # Setting up settings dir
 walk_dj = list(os.walk(to_walk))
-print walk_dj
+
 current_dir, dirs, file_list = walk_dj[1]
 file_list.sort()
 
@@ -72,7 +72,7 @@ if file_list == standard_file_list:
 sys.stdout.write("successfully created settings directory and respective settings files..... \n")
 
 
-# setting up templates, static & media dirs
+# Setting up templates, static & media dirs
 def ask_yes_r_no(prompt, retries=10, complaint='Yes or no, please!'):
 	""" Asking user permission to create templates, static & media directories """
 	while True:
@@ -99,6 +99,11 @@ local_lines = ["\nSTATICFILES_DIRS = (\n    os.path.join(BASE_DIR, 'static'),\n 
 for directory in dir_list:
 	option = ask_yes_r_no("do you want to create settings for "+directory+" directory! (yes or no): ")
 
+	# Writing imports
+	if directory == 'static':
+		with open(os.path.join(settings_dir, 'local.py'), 'a') as local_settings:
+			local_settings.write("import os")
+	# Creatings directories
 	if option == True:
 		os.mkdir(os.path.join(walk_dj[0][0], directory))
 
