@@ -39,6 +39,8 @@ out, err = p.communicate()
 
 if err != None:
 	print err
+	print "example command: django-yak-shave.py startproject mysite"
+	sys.exit()
 
 
 sys.stdout.write("Your Django project created successfully..... \n")
