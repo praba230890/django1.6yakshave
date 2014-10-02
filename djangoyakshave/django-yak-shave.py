@@ -19,25 +19,50 @@ import sys
 
 import os
 import shutil
+import argparse
+
+# Creating argparser to parse command line variables
+parser = argparse.ArgumentParser()
+parser.add_argument("startproject", help="start a django project")
+parser.add_argument("project_name", help="name of the django project")
+parser.add_argument("-d", "--d", help="directory")
+parser.add_argument("--template", "-template", help="existing template")
+args = parser.parse_args()
 
 # Creating Django project
 script = 'django-admin.py'
-command = 'startproject'
-project_name = " ".join(sys.argv[2:])
-if not project_name:
-	print "check what you have typed."
-	print "example command: django-yak-shave.py startproject mysite"
-	sys.exit()
-p = subprocess.Popen([script, 
-                       command, project_name], 
+#command = 'startproject'
+#project_name = " ".join(sys.argv[2:])
+if args.d and args.template:
+	p = subprocess.Popen([script, 
+                       args.startproject, args.project_name, args.d,  
+		       "--template="+args.template], 
 		       stdout=subprocess.PIPE, 
 		       stderr=subprocess.PIPE)
+elif args.d:
+	p = subprocess.Popen([script, 
+                       args.startproject, args.project_name, 
+		       args.d], 
+		       stdout=subprocess.PIPE, 
+		       stderr=subprocess.PIPE)
+elif args.template:
+	p = subprocess.Popen([script, 
+                       args.startproject, args.project_name, 
+		       "--template="+str(args.template)], 
+		       stdout=subprocess.PIPE, 
+		       stderr=subprocess.PIPE)
+else:
+	p = subprocess.Popen([script, 
+                       args.startproject, args.project_name], 
+		       stdout=subprocess.PIPE, 
+		       stderr=subprocess.PIPE)
+
 
 sys.stdout.write("Creating your Django project..... \n")
 
 out, err = p.communicate()
 
-if err != None:
+if err:
 	print err
 	print "example command: django-yak-shave.py startproject mysite"
 	sys.exit()
@@ -48,7 +73,7 @@ sys.stdout.write("Your Django project created successfully..... \n")
 # Getting cwd from terminal
 p = subprocess.Popen(['pwd'], stdout=subprocess.PIPE)
 outer_dir = p.stdout.readline()[:-1]
-to_walk = os.path.join(outer_dir, project_name)
+to_walk = os.path.join(outer_dir, args.project_name)
 
 # Setting up settings dir
 walk_dj = list(os.walk(to_walk))
