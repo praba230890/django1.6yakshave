@@ -71,14 +71,20 @@ if err:
 sys.stdout.write("Your Django project created successfully..... \n")
 
 # Getting cwd from terminal
-p = subprocess.Popen(['pwd'], stdout=subprocess.PIPE)
-outer_dir = p.stdout.readline()[:-1]
-to_walk = os.path.join(outer_dir, args.project_name)
+if args.d:
+	to_walk = os.path.join(os.path.expanduser(args.d), args.project_name)
+	walk_dj = list(os.walk(to_walk))
+else:
+	p = subprocess.Popen(['pwd'], stdout=subprocess.PIPE)
+	outer_dir = p.stdout.readline()[:-1]
+	to_walk = os.path.join(outer_dir, args.project_name)
+	walk_dj = list(os.walk(to_walk))
 
 # Setting up settings dir
-walk_dj = list(os.walk(to_walk))
-
-current_dir, dirs, file_list = walk_dj[1]
+if args.d:
+	current_dir, dirs, file_list = walk_dj[0]
+else:
+	current_dir, dirs, file_list = walk_dj[1]
 file_list.sort()
 
 settings_dir = os.path.join(current_dir, 'settings')
@@ -121,7 +127,7 @@ local_lines = ["\nSTATICFILES_DIRS = (\n    os.path.join(BASE_DIR, 'static'),\n 
 					"\n\n# Templates directory\nTEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]\n", 
 					"\n\n# Media files\nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')\n"]
 
-
+# This thing breaks when directory is specified 
 # Creating necessary directories and adding settings to local.py
 for directory in dir_list:
 	option = ask_yes_r_no("do you want to create settings for "+directory+" directory! (yes or no): ")
