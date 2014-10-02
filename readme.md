@@ -1,4 +1,4 @@
-djangoyakshave
+Django 1.6 Yak Shave
 ==============
 
 Tool for starting (setting) up Django 1.6 projects with best practices (wrote for my personal use in linux). 
