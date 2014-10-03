@@ -63,7 +63,12 @@ sys.stdout.write("Creating your Django project..... \n")
 out, err = p.communicate()
 
 if err:
-	print err
+	print "Cleaning everything..... "
+	if "django-admin.py" not in err:
+		print err
+	if args.startproject is not "startproject":
+		print "error: unrecognized argument: %s" %(args.startproject)
+
 	print "example command: django-yak-shave.py startproject mysite"
 	sys.exit()
 
