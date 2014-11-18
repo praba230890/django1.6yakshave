@@ -21,7 +21,7 @@ import os
 import shutil
 import argparse
 
-if __name__ == '__main__':
+def main(argv):
 	# Creating argparser to parse command line variables
 	parser = argparse.ArgumentParser()
 	parser.add_argument("startproject", help="start a django project")
@@ -154,3 +154,7 @@ if __name__ == '__main__':
 
 		elif option == False:
 			print "Skipping "+directory+" directory creation & setting up..... "
+            
+
+if __name__ == '__main__':
+    main(sys.argv)

@@ -12,7 +12,7 @@ config = {
     'author_email': 'praba230890@gmail.com',
     'version': '0.01',
     'install_requires': ['Django==1.6'],
-    'packages': ['djangoyakshave'],
+    'packages': ['djangoyakshave', 'tests'],
     'scripts': ['djangoyakshave/django-yak-shave.py'],
     'name': 'Django 1.6 Yak Shaving'
 }
